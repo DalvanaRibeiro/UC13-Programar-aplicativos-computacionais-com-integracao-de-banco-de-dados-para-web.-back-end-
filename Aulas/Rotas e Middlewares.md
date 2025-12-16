@@ -245,7 +245,7 @@ Você foi contratado para desenvolver o **back-end de um sistema simples** onde 
 
 Cada jogador será cadastrado apenas pelo **nome**, e todos os dados ficarão armazenados **em memória**, utilizando um **array** (sem banco de dados).
 
-Este exercício utiliza **exatamente o mesmo conceito visto em aula** com rotas, middlewares e array em memória.
+Este exercício utiliza **exatamente o mesmo conceito visto em aula** com rotas, middlewares e array em memória. Utilize como rota 'jogadores'.
 
 ---
 
@@ -265,15 +265,11 @@ Criar um servidor **Node.js + Express** que permita:
 - O time será armazenado em um **array em memória**
 - Cada jogador terá apenas:
   - `nome` (string)
-- Os dados **somem ao desligar o servidor**
-- Não utilizar banco de dados
+- Os métodos: GET, POST, PUT e DELETE devem ser implementados.
+
+## Feito o exercício, aguarde para a dinâmica em aula.
 
 ---
 
-##  Estrutura de Dados
 
-Você deve criar um array semelhante a este:
 
-````
-const time: string[] = [];
-````
