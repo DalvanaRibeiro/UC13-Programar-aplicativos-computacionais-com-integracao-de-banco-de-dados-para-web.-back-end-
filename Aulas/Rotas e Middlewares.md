@@ -241,9 +241,10 @@ O servidor envia a resposta
 
 ##  Contexto
 
-Você foi contratado para desenvolver o **back-end de um sistema simples** onde os usuários podem montar o **time de futebol dos sonhos**.
 
-Cada jogador será cadastrado apenas pelo **nome**, e todos os dados ficarão armazenados **em memória**, utilizando um **array** (sem banco de dados).
+Faça um servidor que disponibiliza uma API de jogadores onde os usuários podem montar o **time de futebol dos sonhos**.
+
+Cada jogador será cadastrado apenas pelo **nome**, e todos os dados ficarão armazenados **em memória**, utilizando um **array** (sem banco de dados, ainda).
 
 Este exercício utiliza **exatamente o mesmo conceito visto em aula** com rotas, middlewares e array em memória. Utilize como rota 'jogadores'.
 
