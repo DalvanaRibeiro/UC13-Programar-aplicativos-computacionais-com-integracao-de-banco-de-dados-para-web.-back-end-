@@ -1,4 +1,126 @@
-# 📝 Exercícios – Express.js (Rotas, HTTP, Req/Res, Status Codes e Middleware)
+# 📝 Exercícios – Express (Rotas, HTTP, Req/Res, Status Codes e Middleware)
+
+---
+Código da Aula 
+
+
+````
+// Importa o framework Express (responsável por rotas e API)
+import express, { Request, Response, NextFunction } from "express";
+
+// Cria a aplicação Express
+const app = express();
+
+// Middleware nativo do Express para ler JSON no body (req.body)
+app.use(express.json());
+
+// Tipagem do objeto Tarefa (boa prática em TypeScript)
+type Tarefa = {
+  id: number;
+  titulo: string;
+  concluida: boolean;
+};
+
+// “Banco de dados” em memória (array) para fins didáticos
+const tarefas: Tarefa[] = [
+  { id: 1, titulo: "Estudar Express", concluida: false },
+  { id: 2, titulo: "Fazer exercícios", concluida: true },
+];
+
+// 1) Middleware global de LOG
+app.use((req: Request, res: Response, next: NextFunction) => {
+  // Mostra no terminal o método e a URL acessada
+  console.log(`[LOG] ${req.method} ${req.url}`);
+
+  // Libera o fluxo para o próximo middleware/rota
+  next();
+});
+
+// ✅ 5) Middleware de validação (será usado apenas no POST)
+function validarTitulo(req: Request, res: Response, next: NextFunction) {
+  // Pega o titulo enviado pelo cliente no corpo da requisição
+  const { titulo } = req.body;
+
+  // Se o titulo não existir ou estiver vazio, é erro do cliente
+  if (!titulo || String(titulo).trim() === "") {
+    // Retorna 400 (Bad Request) e encerra a requisição com return
+    return res.status(400).json({ erro: "O campo 'titulo' é obrigatório." });
+  }
+
+  // Se está tudo certo, libera para a rota continuar
+  next();
+}
+
+//  2) GET /tarefas (com query de filtro)
+app.get("/tarefas", (req: Request, res: Response) => {
+  // Pega a query concluida (pode vir como "true" ou "false")
+  const { concluida } = req.query;
+
+  // Se o cliente NÃO mandou query, devolvemos todas as tarefas
+  if (concluida === undefined) {
+    // 200 = OK (consulta bem-sucedida)
+    return res.status(200).json(tarefas);
+  }
+
+  // Converte a string "true"/"false" em boolean real
+  const concluidaBool = String(concluida) === "true";
+
+  // Filtra as tarefas conforme o boolean
+  const filtradas = tarefas.filter((t) => t.concluida === concluidaBool);
+
+  // Retorna 200 com a lista filtrada
+  return res.status(200).json(filtradas);
+});
+
+// ✅ 3) GET /tarefas/:id (com params)
+app.get("/tarefas/:id", (req: Request, res: Response) => {
+  // Pega o id que veio na URL: /tarefas/10 -> id = "10"
+  const { id } = req.params;
+
+  // Converte o id para número
+  const idNumero = Number(id);
+
+  // Procura a tarefa no “banco”
+  const tarefa = tarefas.find((t) => t.id === idNumero);
+
+  // Se não encontrou, retorna 404
+  if (!tarefa) {
+    return res.status(404).json({ erro: "Tarefa não encontrada." });
+  }
+
+  // Se encontrou, retorna 200 com a tarefa
+  return res.status(200).json(tarefa);
+});
+
+// POST /tarefas (com body) + validação via middleware
+app.post("/tarefas", validarTitulo, (req: Request, res: Response) => {
+  // Pega o titulo do body (já foi validado pelo middleware)
+  const { titulo } = req.body;
+
+  // Cria um novo id baseado no tamanho do array (didático)
+  const novoId = tarefas.length > 0 ? tarefas[tarefas.length - 1].id + 1 : 1;
+
+  // Monta o objeto da nova tarefa
+  const novaTarefa: Tarefa = {
+    id: novoId,
+    titulo: String(titulo),
+    concluida: false, 
+  }
+
+  // Insere a tarefa no array (simulando INSERT no banco)
+  tarefas.push(novaTarefa);
+
+  // Retorna 201 (Created) com o objeto criado
+  return res.status(201).json(novaTarefa);
+})
+
+// Inicializa o servidor na porta 3000
+app.listen(3000, () => {
+  // Mensagem para confirmar que o servidor está rodando
+  console.log("Servidor rodando em http://localhost:3000");
+});
+
+````
 
 ---
 
