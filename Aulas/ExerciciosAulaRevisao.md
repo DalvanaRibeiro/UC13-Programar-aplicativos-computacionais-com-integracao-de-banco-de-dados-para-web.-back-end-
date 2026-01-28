@@ -4,7 +4,7 @@
 Código da Aula 
 
 
-````
+```ts
 // Importa o framework Express (responsável por rotas e API)
 import express, { Request, Response, NextFunction } from "express";
 
